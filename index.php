@@ -13,34 +13,10 @@ $sql_add = "";
 // Список параметров для запроса
 $params = array();
 
-// Проверяем передается ли параметр ISBN в GET
-if(isset($_GET["isbn"]) && !empty($_GET["isbn"])) {
-	if(empty($sql_add)) {
-		$sql_add = " WHERE `isbn` = ?";
-	} else {
-		$sql_add .= " AND `isbn` = ?";
-	}
-	$params[] = $_GET["isbn"];
-}
-
-// Проверяем передается ли параметр NAME в GET
-if(isset($_GET["name"]) && !empty($_GET["name"])) {
-	if(empty($sql_add)) {
-		$sql_add = " WHERE `name` = ?";
-	} else {
-		$sql_add .= " AND `name` = ?";
-	}
-	$params[] = $_GET["name"];
-}
-
-// Проверяем передается ли параметр AUTHOR в GET
-if(isset($_GET["author"]) && !empty($_GET["author"])) {
-	if(empty($sql_add)) {
-		$sql_add = " WHERE `author` = ?";
-	} else {
-		$sql_add .= " AND `author` = ?";
-	}
-	$params[] = $_GET["author"];
+// Присоединяем запрошенные данные к строке sql
+foreach($_GET AS $type => $data) {
+    $data != NULL ? (!empty($sql_add) ? $sql_add .= " AND ".$type." LIKE ?" : $sql_add .= " WHERE ".$type." LIKE ?") : '';
+    $data != NULL ? ($params[] = '%'.$data.'%') : '';
 }
 
 // Объединяем запросы
