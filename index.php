@@ -14,7 +14,8 @@ $sql_add = "";
 $params = array();
 
 // Присоединяем запрошенные данные к строке sql
-foreach($_GET AS $type => $data) {
+$ar_params = array("name" => isset($_GET['name']) ? $_GET['name'] : NULL, "isbn" => isset($_GET['isbn']) ? $_GET['isbn'] : NULL, "author" => isset($_GET['author']) ? $_GET['author'] : NULL);
+foreach($ar_params AS $type => $data) {
     $data != NULL ? (!empty($sql_add) ? $sql_add .= " AND ".$type." LIKE ?" : $sql_add .= " WHERE ".$type." LIKE ?") : '';
     $data != NULL ? ($params[] = '%'.$data.'%') : '';
 }
